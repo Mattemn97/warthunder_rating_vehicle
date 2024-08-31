@@ -1,10 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 
+import vehicle as vh
+
+
 def rank_vehicles(vehicles):
     # Filtriamo i veicoli per ciascuna era
     eras = set(vehicle.era for vehicle in vehicles)
-    
+
     for era in eras:
         era_vehicles = [vehicle for vehicle in vehicles if vehicle.era == era]
 
@@ -60,6 +63,7 @@ def rank_vehicles(vehicles):
 
     return vehicles
 
+
 def scrape_vehicle_data(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -83,7 +87,8 @@ def scrape_vehicle_data(url):
             'gun_depression': None,
             'gun_elevation': None,
             'reload_time': None,
-            'power_to_weight_ratio': None,
+            'engine_power': None,
+            'weight': None,
             'ammunition_capacity': None
         }
 
@@ -108,15 +113,17 @@ def scrape_vehicle_data(url):
                     data['gun_elevation'] = float(value.split()[0])
                 elif 'reload time' in label:
                     data['reload_time'] = float(value.split()[0])
-                elif 'power-to-weight ratio' in label:
-                    data['power_to_weight_ratio'] = float(value.split()[0])
+                elif 'engine_power' in label:
+                    data['engine_power'] = float(value.split()[0])
+                elif 'weight' in label:
+                    data['weight'] = float(value.split()[0])
                 elif 'ammunition capacity' in label:
                     data['ammunition_capacity'] = int(value.split()[0])
 
         # Supponiamo un'era fittizia per il veicolo (può essere cambiata come richiesto)
         era = 4
 
-        vehicle = Vehicle(
+        vehicle = vh.Vehicle(
             name,
             data['speed'],
             data['penetration'],
@@ -126,7 +133,8 @@ def scrape_vehicle_data(url):
             data['gun_depression'],
             data['gun_elevation'],
             data['reload_time'],
-            data['power_to_weight_ratio'],
+            data['engine_power'],
+            data['weight'],
             data['ammunition_capacity'],
             era
         )
