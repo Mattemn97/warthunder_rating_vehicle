@@ -1,3 +1,6 @@
+import requests
+from bs4 import BeautifulSoup
+
 def rank_vehicles(vehicles):
     # Filtriamo i veicoli per ciascuna era
     eras = set(vehicle.era for vehicle in vehicles)
