@@ -56,3 +56,79 @@ def rank_vehicles(vehicles):
             vehicle.ratings[9] = i + 1
 
     return vehicles
+
+def scrape_vehicle_data(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Nome del veicolo
+    name = soup.find('h1', {'id': 'firstHeading'}).text.strip()
+
+    # Dati del veicolo
+    # Estrazione dei dati specifici dalla pagina HTML
+    try:
+        stats_table = soup.find('table', {'class': 'wikitable'})
+        rows = stats_table.find_all('tr')
+
+        # Dizionario per i dati estratti
+        data = {
+            'speed': None,
+            'penetration': None,
+            'turret_rotation_speed': None,
+            'armor_thickness': None,
+            'rate_of_fire': None,
+            'gun_depression': None,
+            'gun_elevation': None,
+            'reload_time': None,
+            'power_to_weight_ratio': None,
+            'ammunition_capacity': None
+        }
+
+        for row in rows:
+            cols = row.find_all('td')
+            if len(cols) >= 2:
+                label = cols[0].get_text(strip=True).lower()
+                value = cols[1].get_text(strip=True)
+                if 'speed' in label:
+                    data['speed'] = float(value.split()[0])
+                elif 'penetration' in label:
+                    data['penetration'] = float(value.split()[0])
+                elif 'turret rotation' in label:
+                    data['turret_rotation_speed'] = float(value.split()[0])
+                elif 'armor' in label:
+                    data['armor_thickness'] = [float(x) for x in value.split('/') if x]
+                elif 'rate of fire' in label:
+                    data['rate_of_fire'] = float(value.split()[0])
+                elif 'gun depression' in label:
+                    data['gun_depression'] = float(value.split()[0])
+                elif 'gun elevation' in label:
+                    data['gun_elevation'] = float(value.split()[0])
+                elif 'reload time' in label:
+                    data['reload_time'] = float(value.split()[0])
+                elif 'power-to-weight ratio' in label:
+                    data['power_to_weight_ratio'] = float(value.split()[0])
+                elif 'ammunition capacity' in label:
+                    data['ammunition_capacity'] = int(value.split()[0])
+
+        # Supponiamo un'era fittizia per il veicolo (può essere cambiata come richiesto)
+        era = 4
+
+        vehicle = Vehicle(
+            name,
+            data['speed'],
+            data['penetration'],
+            data['turret_rotation_speed'],
+            data['armor_thickness'],
+            data['rate_of_fire'],
+            data['gun_depression'],
+            data['gun_elevation'],
+            data['reload_time'],
+            data['power_to_weight_ratio'],
+            data['ammunition_capacity'],
+            era
+        )
+
+        return vehicle
+    except Exception as e:
+        print(f"Errore nel parsing della pagina: {e}")
+        return None
