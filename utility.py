@@ -45,19 +45,14 @@ def rank_vehicles(vehicles):
         for i, vehicle in enumerate(era_vehicles):
             vehicle.ratings[7] = i + 1
 
-        # Ranking per potenza del motore (più alto è migliore)
-        era_vehicles.sort(key=lambda v: v.engine_power, reverse=True)
+        # Ranking per rapporto potenza/peso (più alto è migliore)
+        era_vehicles.sort(key=lambda v: v.power_to_weight_ratio, reverse=True)
         for i, vehicle in enumerate(era_vehicles):
             vehicle.ratings[8] = i + 1
-
-        # Ranking per peso (più basso è migliore)
-        era_vehicles.sort(key=lambda v: v.weight)
-        for i, vehicle in enumerate(era_vehicles):
-            vehicle.ratings[9] = i + 1
 
         # Ranking per capacità di munizioni (più alto è migliore)
         era_vehicles.sort(key=lambda v: v.ammunition_capacity, reverse=True)
         for i, vehicle in enumerate(era_vehicles):
-            vehicle.ratings[10] = i + 1
+            vehicle.ratings[9] = i + 1
 
     return vehicles
