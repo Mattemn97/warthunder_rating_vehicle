@@ -10,16 +10,15 @@ class Vehicle:
         self.gun_depression = gun_depression  # Depressione del cannone in gradi
         self.gun_elevation = gun_elevation  # Elevazione del cannone in gradi
         self.reload_time = reload_time  # Tempo di ricarica in secondi
-        self.engine_power = engine_power  # Potenza del motore in hp
-        self.weight = weight  # Peso del veicolo in tonnellate
+        self.power_to_weight_ratio = engine_power / weight  # Rapporto potenza/peso (hp per tonnellata)
         self.ammunition_capacity = ammunition_capacity  # Capacità di munizioni (numero di colpi)
         self.era = era  # Epoca storica del veicolo (da 1 a 8)
         
         # Lista delle posizioni nel rating del veicolo in ciascun ambito (esclusa l'era)
-        self.ratings = [None] * 11  # Inizialmente, tutti i rating sono impostati su None
+        self.ratings = [None] * 10  # Inizialmente, tutti i rating sono impostati su None
 
     def set_ratings(self, speed_rank, penetration_rank, turret_rotation_rank, armor_rank, rate_of_fire_rank, 
-                    gun_depression_rank, gun_elevation_rank, reload_time_rank, engine_power_rank, weight_rank, 
+                    gun_depression_rank, gun_elevation_rank, reload_time_rank, power_to_weight_rank, 
                     ammunition_capacity_rank):
         self.ratings = [
             speed_rank,  # Posizione nel ranking per la velocità
@@ -30,8 +29,7 @@ class Vehicle:
             gun_depression_rank,  # Posizione nel ranking per la depressione del cannone
             gun_elevation_rank,  # Posizione nel ranking per l'elevazione del cannone
             reload_time_rank,  # Posizione nel ranking per il tempo di ricarica
-            engine_power_rank,  # Posizione nel ranking per la potenza del motore
-            weight_rank,  # Posizione nel ranking per il peso
+            power_to_weight_rank,  # Posizione nel ranking per il rapporto potenza/peso
             ammunition_capacity_rank  # Posizione nel ranking per la capacità di munizioni
         ]
 
@@ -45,6 +43,5 @@ class Vehicle:
                 f" - Depressione cannone: {self.gun_depression} ° (Posizione nel rating: {self.ratings[5]})\n"
                 f" - Elevazione cannone: {self.gun_elevation} ° (Posizione nel rating: {self.ratings[6]})\n"
                 f" - Tempo di ricarica: {self.reload_time} s (Posizione nel rating: {self.ratings[7]})\n"
-                f" - Potenza motore: {self.engine_power} hp (Posizione nel rating: {self.ratings[8]})\n"
-                f" - Peso: {self.weight} t (Posizione nel rating: {self.ratings[9]})\n"
-                f" - Capacità munizioni: {self.ammunition_capacity} colpi (Posizione nel rating: {self.ratings[10]})\n")
+                f" - Rapporto potenza/peso: {self.power_to_weight_ratio:.2f} hp/t (Posizione nel rating: {self.ratings[8]})\n"
+                f" - Capacità munizioni: {self.ammunition_capacity} colpi (Posizione nel rating: {self.ratings[9]})\n")
