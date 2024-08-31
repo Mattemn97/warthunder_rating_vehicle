@@ -13,3 +13,11 @@ ranked_vehicles = utility.rank_vehicles(vehicles)
 
 for vehicle in ranked_vehicles:
     print(vehicle)
+
+url = "https://wiki.warthunder.com/AB_41"
+vehicle = utility.scrape_vehicle_data(url)
+
+if vehicle:
+    print(vehicle)
+else:
+    print("Veicolo non trovato o errore nel parsing.")
